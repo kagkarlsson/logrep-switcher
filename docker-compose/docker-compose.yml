@@ -1,0 +1,50 @@
+version: '3'
+services:
+
+  source:
+    image: postgres:12
+    command: [postgres, -c, 'config_file=/etc/postgresql/postgresql.conf']
+    volumes:
+      - pg_data_source:/var/lib/postgresql/data
+      - ./source.conf:/etc/postgresql/postgresql.conf
+      - ./source-init.sh:/docker-entrypoint-initdb.d/source-init.sh
+    environment:
+      - POSTGRES_PASSWORD=ia6JooHu5c
+      - POSTGRES_USER=logrep
+      - POSTGRES_DB=logrep
+    ports:
+      - "5433:5433"
+
+  dest:
+    image: postgres:12
+    command: [postgres, -c, 'config_file=/etc/postgresql/postgresql.conf']
+    volumes:
+      - pg_data_dest:/var/lib/postgresql/data
+      - ./dest.conf:/etc/postgresql/postgresql.conf
+      - ./dest-init.sh:/docker-entrypoint-initdb.d/dest-init.sh
+    environment:
+      - POSTGRES_PASSWORD=ia6JooHu5c
+      - POSTGRES_USER=logrep
+      - POSTGRES_DB=logrep
+    ports:
+      - "5434:5434"
+
+  pgbouncer:
+    image: edoburu/pgbouncer
+    environment:
+       - DB_USER=logrep
+       - DB_PASSWORD=ia6JooHu5c
+       - DB_PORT=5433
+       - DB_HOST=source
+       - DB_NAME=logrep
+       - POOL_MODE=session
+       - ADMIN_USERS=postgres,logrep
+    ports:
+      - "5432:5432"
+    depends_on:
+      - source
+      - dest
+
+volumes:
+  pg_data_source:
+  pg_data_dest:
