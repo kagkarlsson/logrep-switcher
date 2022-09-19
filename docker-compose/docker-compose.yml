@@ -39,6 +39,7 @@ services:
        - DB_NAME=logrep
        - POOL_MODE=session
        - ADMIN_USERS=postgres,logrep
+       - PGPASSWORD=ia6JooHu5c
     ports:
       - "5432:5432"
     depends_on:
