@@ -2,7 +2,7 @@ version: '3'
 services:
 
   source:
-    image: postgres:12
+    image: postgres:14
     command: [postgres, -c, 'config_file=/etc/postgresql/postgresql.conf']
     volumes:
       - pg_data_source:/var/lib/postgresql/data
@@ -16,7 +16,7 @@ services:
       - "5433:5433"
 
   dest:
-    image: postgres:12
+    image: postgres:14
     command: [postgres, -c, 'config_file=/etc/postgresql/postgresql.conf']
     volumes:
       - pg_data_dest:/var/lib/postgresql/data
@@ -34,6 +34,7 @@ services:
     environment:
        - DB_USER=logrep
        - DB_PASSWORD=ia6JooHu5c
+       - AUTH_TYPE=plain
        - DB_PORT=5433
        - DB_HOST=source
        - DB_NAME=logrep

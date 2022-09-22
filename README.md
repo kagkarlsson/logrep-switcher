@@ -63,6 +63,13 @@ resume
 ...
 ```
 
+### Pausing subscription to get "lag"
+
+On dest:
+```
+alter subscription my_subscription disable;
+```
+
 ## Findings
 
 * For pooling-mode=session `PAUSE` will not return until all ongoing sessions are disconnected
